@@ -7,7 +7,7 @@ package multilistas;
 
 /**
  *
- * @author D&S2
+ * @author CAMILO
  */
 public class Arista {
 
