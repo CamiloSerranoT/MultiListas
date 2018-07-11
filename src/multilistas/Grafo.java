@@ -38,19 +38,24 @@ public class Grafo {
             } else {
                 if (buscarVer(dato) != null) {
                     aux = buscarVer(dato);
-                    Vertice aux2;
-                    aux2 = inicio;
-
-                    do {
-                        aux2 = aux2.getSig();
-                    } while (aux2.getSig() != aux);
+                    Vertice aux2 = inicio;
 
                     if (aux.getSig() == null) {
                         aux2.setSig(nuevo);
                         fin = nuevo;
                     } else {
-                        aux2.setSig(nuevo);
-                        nuevo.setSig(aux.getSig());
+                        if (aux == inicio) {
+                            nuevo.setSig(aux.getSig());
+                        } else {
+                            do {
+                                if (aux2.getSig() != aux) {
+                                    aux2 = aux2.getSig();
+                                }
+                            } while (aux2.getSig() != aux);
+
+                            aux2.setSig(nuevo);
+                            nuevo.setSig(aux.getSig());
+                        }
                     }
                 } else {
                     fin.setSig(nuevo);
@@ -134,16 +139,6 @@ public class Grafo {
         return com;
     }
 
-    public void imprimirOpcional() {
-        Vertice aux;
-        aux = inicio;
-
-        do {
-            System.out.println(aux.getDato());
-            aux = aux.getSig();
-        } while (aux != null);
-    }
-
     public void imprimir(int recibe) {
         Vertice aux = buscarVer(recibe);
 
@@ -152,7 +147,9 @@ public class Grafo {
             System.out.println("|                               |");
             System.out.println("|  IMPRESION DE LA MULTI-LISTA  |");
             Cola cola = new Cola();
+            Cola colaOpcional = new Cola();
             cola.add((int) aux.getDato());
+            colaOpcional.add((int) aux.getDato());
             Nodo recorreCola = new Nodo();
             Arista aris = new Arista();
             Nodo imprime = new Nodo();
@@ -174,8 +171,9 @@ public class Grafo {
                     //Recorre cada arista que se conecta a un vertice especifico
                     if (aris != null) {
                         do {
-                            if (vecticeIgualEnCola(aris, cola) == false) {
+                            if (vecticeIgualEnCola(aris, colaOpcional) == false) {
                                 cola.add(aris.getDatoDest());
+                                colaOpcional.add(aris.getDatoDest());
                             }
                             aris = aris.getSig();
                         } while (aris != null);
@@ -184,7 +182,7 @@ public class Grafo {
                     imprime = cola.atender();
                     System.out.println("|         VERTICE:    " + imprime.getDato() + "         |");
                     recorreCola = recorreCola.getSig();
-                } while (recorreCola != null);   
+                } while (recorreCola != null);
             }
             System.out.println("|_______________________________|");
         } else {
@@ -197,9 +195,10 @@ public class Grafo {
 
     }
 
-    private boolean vecticeIgualEnCola(Arista aris, Cola cola) {
+    private boolean vecticeIgualEnCola(Arista aris, Cola colaOpcional) {
         boolean comprobar = false;
-        Nodo reco = cola.getInicioCola();
+
+        Nodo reco = colaOpcional.getInicioCola();
 
         do {
             if (reco.getDato() == aris.getDatoDest()) {
