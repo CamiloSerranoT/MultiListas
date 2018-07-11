@@ -47,14 +47,6 @@ public class MultiListas {
 
         } while (opcion != 4);
         
-        grafo.insertarVertice(1);
-        grafo.insertarVertice(2);
-        grafo.insertarVertice(3);
-        
-        grafo.insertarArista(1, 2);
-        
-        grafo.imprimir(1);
-        
     }
 
 }
